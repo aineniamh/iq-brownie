@@ -51,9 +51,11 @@ rule iqtree_representative_sequences:
         rules.anonymise_headers.output.fasta
     params:
         pass_to_iqtree = config["pass_to_iqtree"]
+    threads: workflow.cores
     output:
         config["outdir"] + "/temp/hash.fasta.treefile"
     run:
+        print(f"Passing in {workflow.cores} to this")
         iqtree_check = output[0].rstrip("treefile") + "iqtree"
         if os.path.exists(iqtree_check):
             print("Tree exists, going to rerun", iqtree_check)

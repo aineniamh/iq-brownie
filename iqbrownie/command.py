@@ -24,9 +24,17 @@ def main(sysargs = sys.argv[1:]):
     else:
         args = parser.parse_args(sysargs[:2])
 
-    pass_to_iqtree = "!".join(sysargs[2:])
+    iqtree_config =sysargs[2:]
+    pass_to_iqtree = "!".join(iqtree_config)
     print(pass_to_iqtree)
 
+    threads = 1
+    try:
+        for i in range(len(iqtree_config)):
+            if iqtree_config[i] == "-nt":
+                threads = int(iqtree_config[i+1])
+    except:
+        threads =1
 
     # first, find the Snakefile
     snakefile = os.path.join(thisdir, 'scripts/Snakefile')
@@ -50,7 +58,7 @@ def main(sysargs = sys.argv[1:]):
     # run subtyping
     status = snakemake.snakemake(snakefile, printshellcmds=True,
                                  forceall=True,
-                                 config=config
+                                 config=config,cores=threads,lock=False
                                  )
 
     if status: # translate "success" into shell exit code of 0
