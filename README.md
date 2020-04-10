@@ -9,6 +9,14 @@ Recommended install is to create the ``iqbrownie`` environment using [conda](htt
 conda env create -f environment.yml
 ```
 
+Otherwise, you can pip install this repository with:
+
+```
+pip install git+https://github.com/aineniamh/iq-brownie
+```
+
+But you'll need to then install ``iqtree`` and ``snakemake-minimal`` yourself. More details about dependencies are found in the ``environment.yml`` file. 
+
 ### Usage
 
 ``iqbrownie`` has all the functionality of iqtree, and will pass arguments through to iqtree, but just cocoons your taxon names in a little safe hash. 
