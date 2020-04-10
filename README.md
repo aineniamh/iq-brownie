@@ -26,4 +26,7 @@ optional arguments:
 
 Your tree file will be output by default in the same directory as your alignment, with the same file name stem sans the ``.fasta``.
 
+### References
+
+B.Q. Minh, H.A. Schmidt, O. Chernomor, D. Schrempf, M.D. Woodhams, A. von Haeseler, R. Lanfear (2020) IQ-TREE 2: New models and efficient methods for phylogenetic inference in the genomic era. Mol. Biol. Evol., in press:. https://doi.org/10.1093/molbev/msaa015
 
