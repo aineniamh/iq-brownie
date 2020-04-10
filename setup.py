@@ -15,7 +15,6 @@ setup(name='iq-brownie',
       author_email='aine.otoole@ed.ac.uk',
       install_requires=[
           "biopython>=1.70",
-          "dendropy>=4.4.0",
           "pytools==2020.1"
       ]
       entry_points="""
