@@ -1,0 +1,88 @@
+from Bio import SeqIO
+from pytools.persistent_dict import PersistentDict
+
+taxa_hash = PersistentDict("taxa_hash")
+
+##### Configuration #####
+
+if config.get("pass_to_iqtree"):
+    config["pass_to_iqtree"] = " ".join(config["pass_to_iqtree"].split("!"))
+
+outname = ""
+if config.get("alignment"):
+    outname = ".".join(config["alignment"].split(".")[:-1])+".tree"
+    print("Outname:", outname)
+    config["outfile"] = outname
+
+if config.get("outdir"):
+    config["outdir"] = config["outdir"].rstrip('/')
+else:
+    config["outdir"] = "/".join(config["alignment"].split("/")[:-1])
+    print("Outdir:", config["outdir"])
+
+##### Target rules #####
+
+rule all:
+    input:
+        outname
+
+rule anonymise_headers:
+    input:
+        config["alignment"]
+    output:
+        fasta = config["outdir"] + "/temp/hash.fasta"
+    run:
+        c = 0
+        with open(output.fasta, "w") as fw:
+            for record in SeqIO.parse(input[0],"fasta"):
+                c+=1
+                taxon_hash = ""
+                if "EPI_ISL_406801" in record.id: # this is the WH04 GISAID ID
+                    taxon_hash = f"taxoutgroup_Atax"
+                else:
+                    taxon_hash = f"tax{c}tax"
+                taxa_hash.store(record.id,taxon_hash)
+                fw.write(f">{taxon_hash}\n{record.seq}\n")
+            
+            print(f"{c+1} anonymised sequences written to {output.fasta}")
+
+rule iqtree_representative_sequences:
+    input:
+        rules.anonymise_headers.output.fasta
+    params:
+        pass_to_iqtree = config["pass_to_iqtree"]
+    output:
+        config["outdir"] + "/temp/hash.fasta.treefile"
+    run:
+        iqtree_check = output[0].rstrip("treefile") + "iqtree"
+        if os.path.exists(iqtree_check):
+            print("Tree exists, going to rerun", iqtree_check)
+            shell("iqtree -s {input[0]:q} {params.pass_to_iqtree} -redo")
+        else:
+            print("Tree doesn't exist here", output[0])
+            shell("iqtree -s {input[0]:q} {params.pass_to_iqtree}")
+
+rule restore_tree_headers:
+    input:
+        tree= config["outdir"] + "/temp/hash.fasta.treefile",
+        aln = config["alignment"]
+    output:
+        outname
+    run:
+        fw = open(outname,"w")
+        with open(input.tree, "r") as f:
+            for l in f:
+                l = l.rstrip("\n")
+                for record in SeqIO.parse(input.aln, "fasta"):
+                    taxon_hash = taxa_hash.fetch(record.id)
+                    l = l.replace(taxon_hash, record.id)
+                fw.write(l + '\n')
+        fw.close()
+
+
+
+
+
+
+
+

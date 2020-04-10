@@ -1,0 +1,12 @@
+name: iqbrownie
+channels:
+  - bioconda
+  - defaults
+  - conda-forge
+dependencies:
+  - biopython=1.74
+  - iqtree
+  - snakemake-minimal=5.13
+  - pip=19.3.1
+  - pip:
+    - pytools==2020.1
