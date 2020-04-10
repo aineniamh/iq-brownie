@@ -22,12 +22,10 @@ But you'll need to then install ``iqtree`` and ``snakemake-minimal`` yourself. M
 ``iqbrownie`` has all the functionality of iqtree, and will pass arguments through to iqtree, but just cocoons your taxon names in a little safe hash. 
 
 ```
-usage: iqbrownie -s ALIGNMENT [options for iqtree]
-
 iqbrownie: taxon hashing so names dont get corrupted when running iqtree
 
-optional arguments:
-  -s ALIGNMENT
+usage: iqbrownie -s ALIGNMENT [options for iqtree]
+
 ```
 
 ### Output
