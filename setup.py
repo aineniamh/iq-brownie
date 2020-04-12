@@ -16,7 +16,7 @@ setup(name='iq-brownie',
       install_requires=[
           "biopython>=1.70",
           "pytools==2020.1"
-      ]
+      ],
       entry_points="""
       [console_scripts]
       {program} = iqbrownie.command:main
