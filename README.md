@@ -28,9 +28,18 @@ usage: iqbrownie -s ALIGNMENT [options for iqtree]
 
 ```
 
+*Note*: When running ``iqbrownie``, the ``-s`` argument must be the first argument and the ``-nt`` option of ``iqtree`` now expects an integer value (i.e. ``AUTO`` will not work). Other than that, usage is identical to ``iqtree``. 
+
 ### Output
 
 Your tree file will be output by default in the same directory as your alignment, with the same file name stem sans the ``.fasta``.
+
+E.g. 
+
+```
+Query: my_test_sequences.fasta
+Output: my_test_sequences.tree
+```
 
 ### References
 
